@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title Login - Fotaza 2
+  body
+    h1 Iniciar Sesión
+    form(action="/login" method="POST")
+      div
+        label Email:
+        input(type="email" name="email" required)
+      div
+        label Contraseña:
+        input(type="password" name="password" required)
+      button(type="submit") Ingresar
+    p ¿No tenés cuenta? 
+      a(href="/register") Registrate acá

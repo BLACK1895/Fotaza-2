@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    title Registro - Fotaza 2
+  body
+    h1 Crear Cuenta en Fotaza 2
+    form(action="/register" method="POST")
+      div
+        label Username:
+        input(type="text" name="username" required)
+      div
+        label Email:
+        input(type="email" name="email" required)
+      div
+        label Contraseña:
+        input(type="password" name="password" required)
+      button(type="submit") Registrarse
+    p ¿Ya tenés cuenta? 
+      a(href="/login") Iniciá sesión acá
