@@ -4,7 +4,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "db:init": "node config/dbInit.js"
+    "db:init": "node config/initDb.js"
   },
   "keywords": [],
   "author": "",
