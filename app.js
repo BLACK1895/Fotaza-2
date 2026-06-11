@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Configuración de sesiones (NUEVO)
 app.use(session({
-    secret: 'clave_secreta_para_fotaza', // Cambiala por algo seguro
+    secret: 'clave_secreta_para_fotaza',
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false } // Poné true si usás HTTPS, para localhost va false
@@ -25,14 +25,12 @@ app.use(session({
 
 // Importar Rutas
 const authRoutes = require('./routes/authRoutes');
+const postRoutes = require('./routes/postRoutes');
 app.use('/', authRoutes); // Conectamos las rutas de login/registro
+app.use('/', postRoutes);// Conectamos las rutas de posts (crear, listar, etc.)
 
-// Ruta protegida de prueba (Dashboard mínimo)
-app.get('/dashboard', (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/login'); // Si no inició sesión, afuera
-    }
-    res.send(`<h1>Bienvenido a Fotaza 2, ${req.session.username}!</h1><a href="/logout">Cerrar Sesión</a>`);
+app.get('/', (req, res) => {
+    res.redirect('/login');
 });
 
 // Ruta de inicio redirige al login temporalmente

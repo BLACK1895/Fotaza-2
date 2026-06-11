@@ -1,0 +1,47 @@
+doctype html
+html
+  head
+    title Muro de Fotos - Fotaza 2
+    style.
+      body { font-family: Arial, sans-serif; margin: 40px; }
+      .form-box { background: #f4f4f4; padding: 20px; margin-bottom: 30px; border-radius: 8px; max-width: 500px; }
+      .post-card { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px; max-width: 600px; }
+      .post-card img { max-width: 100%; height: auto; display: block; margin-top: 10px; border-radius: 4px; }
+      .badge { background: #007BFF; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  body
+    h1 Bienvenido, #{username}! 📸
+    a(href="/logout" style="color: red;") Cerrar Sesión
+    
+    hr
+    
+    .form-box
+      h3 Compartir una nueva foto
+      //- MUY IMPORTANTE: el enctype="multipart/form-data" es obligatorio para subir archivos
+      form(action="/publicar" method="POST" enctype="multipart/form-data")
+        div(style="margin-bottom: 10px;")
+          label Título: 
+          input(type="text" name="titulo" required style="width: 100%;")
+        div(style="margin-bottom: 10px;")
+          label Descripción: 
+          textarea(name="descripcion" style="width: 100%;")
+        div(style="margin-bottom: 10px;")
+          label Tipo de Licencia: 
+          select(name="tipo_licencia")
+            option(value="copyright") Con Copyright
+            option(value="sin_copyright") Sin Copyright (Uso Libre)
+        div(style="margin-bottom: 15px;")
+          label Seleccionar Foto: 
+          input(type="file" name="foto" accept="image/*" required)
+        button(type="submit") Subir a Fotaza
+        
+    h2 Muro Reciente
+    if posts.length > 0
+      each post in posts
+        .post-card
+          h3 #{post.titulo}
+          p publicado por **#{post.username}** span.badge #{post.tipo_licencia}
+          p #{post.descripcion}
+          img(src=post.ruta_archivo alt=post.titulo)
+          small Subido el: #{post.created_at.toLocaleDateString()}
+    else
+      p No hay fotos publicadas todavía. ¡Sé el primero en subir una!
