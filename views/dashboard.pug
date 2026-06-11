@@ -2,46 +2,58 @@ doctype html
 html
   head
     title Muro de Fotos - Fotaza 2
-    style.
-      body { font-family: Arial, sans-serif; margin: 40px; }
-      .form-box { background: #f4f4f4; padding: 20px; margin-bottom: 30px; border-radius: 8px; max-width: 500px; }
-      .post-card { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px; max-width: 600px; }
-      .post-card img { max-width: 100%; height: auto; display: block; margin-top: 10px; border-radius: 4px; }
-      .badge { background: #007BFF; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+    link(rel="stylesheet", href="/css/style.css")
   body
-    h1 Bienvenido, #{username}! 📸
-    a(href="/logout" style="color: red;") Cerrar Sesión
-    
-    hr
-    
-    .form-box
-      h3 Compartir una nueva foto
-      //- MUY IMPORTANTE: el enctype="multipart/form-data" es obligatorio para subir archivos
-      form(action="/publicar" method="POST" enctype="multipart/form-data")
-        div(style="margin-bottom: 10px;")
-          label Título: 
-          input(type="text" name="titulo" required style="width: 100%;")
-        div(style="margin-bottom: 10px;")
-          label Descripción: 
-          textarea(name="descripcion" style="width: 100%;")
-        div(style="margin-bottom: 10px;")
-          label Tipo de Licencia: 
-          select(name="tipo_licencia")
-            option(value="copyright") Con Copyright
-            option(value="sin_copyright") Sin Copyright (Uso Libre)
-        div(style="margin-bottom: 15px;")
-          label Seleccionar Foto: 
-          input(type="file" name="foto" accept="image/*" required)
-        button(type="submit") Subir a Fotaza
-        
-    h2 Muro Reciente
-    if posts.length > 0
-      each post in posts
-        .post-card
-          h3 #{post.titulo}
-          p publicado por **#{post.username}** span.badge #{post.tipo_licencia}
-          p #{post.descripcion}
-          img(src=post.ruta_archivo alt=post.titulo)
-          small Subido el: #{post.created_at.toLocaleDateString()}
-    else
-      p No hay fotos publicadas todavía. ¡Sé el primero en subir una!
+    .dashboard-header
+      h1 FOTAZA 2 📸
+      .user-info
+        span Hola, #{username}! 
+        a(href="/logout" style="margin-left: 20px; color: #fff; font-size: 13px;") [ Salir ]
+
+    .dashboard-wrapper
+      .upload-card
+        h3 Compartir Momento
+        form(action="/publicar" method="POST" enctype="multipart/form-data")
+          .form-group
+            input.minimal-input(type="text" name="titulo" required placeholder="Título de la foto")
+          .form-group
+            textarea(name="descripcion" rows="2" placeholder="¿Qué está pasando en esta imagen?")
+          .form-group
+            label(style="font-size: 12px; color: #777; display: block; margin-bottom: 5px;") Licencia:
+            select(name="tipo_licencia")
+              option(value="copyright") © Con Copyright
+              option(value="sin_copyright") CC0 Uso Libre
+          .form-group(style="margin-top: 15px; margin-bottom: 25px;")
+             input#foto-input(type="file" name="foto" accept="image/*" required style="display: none;" onchange="updateFileName()")
+             label.file-label(for="foto-input") 📸 Seleccionar Foto
+             span#file-name(style="display: block; margin-top: 8px; font-size: 13px; color: #555; font-style: italic;") Ningún archivo seleccionado
+
+             button.btn-boca(type="submit") Subir al Muro
+             
+          script.
+            function updateFileName() {
+              const input = document.getElementById('foto-input');
+              const label = document.getElementById('file-name');
+               if(input.files && input.files.length > 0) {
+                label.innerText = "Archivo listo: " + input.files[0].name;
+              } else {
+              label.innerText = "Ningún archivo seleccionado";
+               }
+            }
+      h2(style="color: #fff; margin-bottom: 20px; font-size: 18px; text-transform: uppercase;") Muro Xeneize
+      if posts.length > 0
+        each post in posts
+          .post-card
+            .post-header
+              div
+                h3 #{post.titulo}
+                span.post-username por @#{post.username}
+              span.license-badge #{post.tipo_licencia === 'copyright' ? 'Copyright' : 'Libre'}
+            img(src=post.ruta_archivo alt=post.titulo)
+            .post-content
+              p.post-description #{post.descripcion}
+            .post-footer
+              span Publicado el #{new Date(post.created_at).toLocaleDateString()}
+      else
+        .upload-card(style="text-align: center;")
+          p(style="color: #777;") No hay fotos aún. ¡Inaugurá el muro!

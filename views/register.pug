@@ -2,18 +2,26 @@ doctype html
 html
   head
     title Registro - Fotaza 2
+    link(rel="stylesheet", href="/css/style.css")
   body
-    h1 Crear Cuenta en Fotaza 2
-    form(action="/register" method="POST")
-      div
-        label Username:
-        input(type="text" name="username" required)
-      div
-        label Email:
-        input(type="email" name="email" required)
-      div
-        label Contraseña:
-        input(type="password" name="password" required)
-      button(type="submit") Registrarse
-    p ¿Ya tenés cuenta? 
-      a(href="/login") Iniciá sesión acá
+    .auth-wrapper
+      .auth-avatar
+        .auth-avatar-icon
+      
+      .auth-container
+        h1 Registro
+        form(action="/register" method="POST")
+          .form-group
+            .input-icon.icon-user
+            input.minimal-input(type="text" name="username" required placeholder="Nombre de usuario")
+          .form-group
+            .input-icon.icon-email
+            input.minimal-input(type="email" name="email" required placeholder="Email ID")
+          .form-group
+            .input-icon.icon-pass
+            input.minimal-input(type="password" name="password" required placeholder="Password")
+          button.btn-boca(type="submit") Registrarse
+          
+    .auth-outside-footer
+      p ¿Ya tenés cuenta? 
+        a(href="/login") Iniciá sesión acá

@@ -1,16 +1,26 @@
 doctype html
 html
   head
-    title Login - Fotaza 2
+    title Iniciar Sesión - Fotaza 2
+    link(rel="stylesheet", href="/css/style.css")
   body
-    h1 Iniciar Sesión
-    form(action="/login" method="POST")
-      div
-        label Email:
-        input(type="email" name="email" required)
-      div
-        label Contraseña:
-        input(type="password" name="password" required)
-      button(type="submit") Ingresar
-    p ¿No tenés cuenta? 
-      a(href="/register") Registrate acá
+    .auth-wrapper
+      .auth-avatar
+        .auth-avatar-icon
+      
+      .auth-container
+        h1 Login
+        form(action="/login" method="POST")
+          .form-group
+            .input-icon.icon-email
+            input.minimal-input(type="email" name="email" required placeholder="Email ID")
+          .form-group
+            .input-icon.icon-pass
+            input.minimal-input(type="password" name="password" required placeholder="Password")
+          button.btn-boca(type="submit") Login
+        if error
+          .error-message #{error}
+          
+    .auth-outside-footer
+      p ¿No tenés cuenta? 
+        a(href="/register") Registrate acá

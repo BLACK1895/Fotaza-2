@@ -19,7 +19,7 @@ const AuthController = {
             res.redirect('/login'); // Redirige al login tras registrarse con éxito
         } catch (error) {
             console.error(error);
-            res.send('<h1>Error al registrar usuario. El email o username ya pueden existir.</h1>');
+            res.render('register', { error: 'Error al registrar usuario. El email o username ya pueden existir.' });
         }
     },
 
@@ -34,13 +34,13 @@ const AuthController = {
         try {
             const user = await UserModel.findByEmail(email);
             if (!user) {
-                return res.send('<h1>Usuario no encontrado</h1>');
+                return res.render('login', { error: 'El correo electrónico no está registrado.' });
             }
 
             // Comparar contraseña encriptada
             const match = await bcrypt.compare(password, user.password);
             if (!match) {
-                return res.send('<h1>Contraseña incorrecta</h1>');
+                return res.render('login', { error: 'La contraseña es incorrecta.' });
             }
 
             // Guardar al usuario en la sesión de Express
@@ -48,10 +48,10 @@ const AuthController = {
             req.session.username = user.username;
             req.session.rol = user.rol;
 
-            res.redirect('/dashboard'); // Va a la zona privada
+            res.redirect('/dashboard'); 
         } catch (error) {
             console.error(error);
-            res.send('<h1>Error en el servidor durante el login</h1>');
+            res.render('login', { error: 'Ocurrió un error en el servidor. Intentá más tarde.' });
         }
     },
 
