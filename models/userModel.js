@@ -15,6 +15,12 @@ const UserModel = {
 );
         return result.insertId;
     }
+
 };
+//eliminar usuario
+const deleteUser = async (id) => {
+    return await db.query('DELETE FROM usuarios WHERE id = ?', [id]);
+};
+
 
 module.exports = UserModel;

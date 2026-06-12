@@ -48,19 +48,48 @@ const AuthController = {
             req.session.username = user.username;
             req.session.rol = user.rol;
 
-            res.redirect('/dashboard'); 
+            res.redirect('/dashboard');
         } catch (error) {
             console.error(error);
             res.render('login', { error: 'Ocurrió un error en el servidor. Intentá más tarde.' });
         }
     },
 
+
+
     // Cerrar sesión
     logout: (req, res) => {
         req.session.destroy(() => {
             res.redirect('/login');
         });
-    }
+    },
+
+    //eliminar cuenta
+    eliminarCuenta: async (req, res) => {
+        try {
+            const usuarioId = req.session.userId; // Tomamos el ID de la sesión activa
+
+            if (!usuarioId) {
+                return res.redirect('/login');
+            }
+
+            // 1. Llamamos al modelo para borrar de la BD (Aiven ejecuta el CASCADE y borra sus fotos solo)
+            await UserModel.deleteUser(usuarioId);
+
+            // 2. Destruimos la sesión de Express para desloguearlo
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error('Error al destruir la sesión:', err);
+                }
+                // 3. Lo mandamos al login con la cuenta ya eliminada
+                res.redirect('/login');
+            });
+        } catch (error) {
+            console.error('Error al eliminar cuenta:', error);
+            res.status(500).send('Error en el servidor al intentar dar de baja la cuenta.');
+        }
+    },
 };
+
 
 module.exports = AuthController;

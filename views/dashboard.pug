@@ -9,7 +9,9 @@ html
       .user-info
         span Hola, #{username}! 
         a(href="/logout" style="margin-left: 20px; color: #fff; font-size: 13px;") [ Salir ]
-
+        // --- SECCIÓN DAR DE BAJA CUENTA ---
+        form(action="/eliminar-cuenta" method="POST" style="display: inline-block; margin-left: 20px;" onsubmit="return confirm('¿Estás completamente seguro de que querés dar de baja tu cuenta? Esta acción eliminará permanentemente tu perfil y todas tus fotos del muro.');")
+          button(type="submit" style="background: none; border: none; color: #ff4d4d; font-size: 13px; cursor: pointer; text-decoration: underline; padding: 0;") [ Dar de baja cuenta ]
     .dashboard-wrapper
       .upload-card
         h3 Compartir Momento

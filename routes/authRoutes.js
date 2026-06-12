@@ -13,4 +13,7 @@ router.post('/login', AuthController.login);
 // Ruta de Logout
 router.get('/logout', AuthController.logout);
 
+//Ruta para eliminar cuenta
+router.post('/eliminar-cuenta', AuthController.eliminarCuenta);
+
 module.exports = router;
