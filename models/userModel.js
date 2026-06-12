@@ -9,17 +9,16 @@ const UserModel = {
 
     // Crear un nuevo usuario (para el Registro)
     create: async (username, email, passwordHash) => {
-     const [result] = await db.query(
-    'INSERT INTO usuarios (username, email, password, rol) VALUES (?, ?, ?, ?)',
-    [username, email, passwordHash, 'usuario']
-);
+        const [result] = await db.query(
+            'INSERT INTO usuarios (username, email, password, rol) VALUES (?, ?, ?, ?)',
+            [username, email, passwordHash, 'usuario']
+        );
         return result.insertId;
+    },
+    //eliminar usuario
+    deleteUser: async (id) => {
+        return await db.query('DELETE FROM usuarios WHERE id = ?', [id]);
     }
-
-};
-//eliminar usuario
-const deleteUser = async (id) => {
-    return await db.query('DELETE FROM usuarios WHERE id = ?', [id]);
 };
 
 
