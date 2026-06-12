@@ -1,18 +1,22 @@
 const PostModel = require('../models/postModel');
 
 const PostController = {
-    showDashboard: async (req, res) => {
+showDashboard: async (req, res) => {
         if (!req.session.userId) return res.redirect('/login');
-        
+
         try {
-            const posts = await PostModel.getAll();
+            // 🔍 Capturamos lo que el usuario escribe en la barra de búsqueda (?search=...)
+            const search = req.query.search || '';
+
+            // Le pasamos el parámetro de búsqueda al modelo para que filtre
+            const posts = await PostModel.getAll(search);
+
             res.render('dashboard', { username: req.session.username, posts });
         } catch (error) {
             console.error(error);
             res.send('<h1>Error al cargar las publicaciones</h1>');
         }
     },
-
     createPost: async (req, res) => {
         if (!req.session.userId) return res.redirect('/login');
         
