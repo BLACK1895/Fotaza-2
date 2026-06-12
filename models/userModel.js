@@ -9,10 +9,10 @@ const UserModel = {
 
     // Crear un nuevo usuario (para el Registro)
     create: async (username, email, passwordHash) => {
-        const [result] = await db.query(
-            'INSERT INTO usuarios (username, email, password, rol) VALUES (?, ?, ?, "usuario")',
-            [username, email, passwordHash]
-        );
+     const [result] = await db.query(
+    'INSERT INTO usuarios (username, email, password, rol) VALUES (?, ?, ?, ?)',
+    [username, email, passwordHash, 'usuario']
+);
         return result.insertId;
     }
 };
