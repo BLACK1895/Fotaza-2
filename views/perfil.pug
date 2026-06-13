@@ -1,0 +1,53 @@
+doctype html
+html
+  head
+    title Perfil de @#{perfilUsuario.username} - Fotaza 2
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    .dashboard-header
+      h1 FOTAZA 2 📸
+      .user-info
+        span Hola, #{username}! 
+        a(href="/dashboard" style="margin-left: 20px; color: #ffcc00; font-size: 13px; font-weight: bold; text-decoration: none;") [ Volver al Muro ]
+    
+    .dashboard-wrapper
+      .upload-card(style="text-align: center; margin-bottom: 30px; background: #fffefe; border: 1px solid #333;")
+        h2(style="color: #ffcc00; margin-bottom: 5px;") @#{perfilUsuario.username}
+        p(style="color: #777; font-size: 13px; margin-bottom: 15px;") Miembro desde #{new Date(perfilUsuario.created_at).toLocaleDateString()}
+        
+        .stats-container(style="display: flex; justify-content: center; gap: 40px; margin-bottom: 20px;")
+          div
+            span(style="display: block; font-size: 20px; font-weight: bold; color: #1f00a8;") #{followersCount}
+            span(style="color: #777; font-size: 12px; text-transform: uppercase;") Seguidores
+          div
+            span(style="display: block; font-size: 20px; font-weight: bold; color: #1f00a8;") #{followingCount}
+            span(style="color: #777; font-size: 12px; text-transform: uppercase;") Seguidos
+
+        if sesionUsuarioId !== perfilUsuario.id
+          form(action=`/usuario/${perfilUsuario.id}/follow` method="POST")
+            if yaLoSigue
+              button.btn-boca(type="submit" style="background: #ff4d4d; color: #1f00a8; width: auto; padding: 8px 25px; margin-top: 0;") Dejar de seguir
+            else
+              button.btn-boca(type="submit" style="width: auto; padding: 8px 25px; margin-top: 0;") ➕ Seguir
+      
+      h2(style="color: #fff; margin-bottom: 20px; font-size: 18px; text-transform: uppercase;") Fotos de @#{perfilUsuario.username}
+      
+      if posts.length > 0
+        each post in posts
+          .post-card
+            .post-header
+              div
+                h3 #{post.titulo}
+              span.license-badge #{post.tipo_licencia === 'copyright' ? 'Copyright' : 'Libre'}
+            
+            if post.ruta_archivo
+              img(src=`/uploads/${post.ruta_archivo}` alt=post.titulo)
+            
+            .post-content
+              p.post-description #{post.descripcion}
+            
+            .post-footer
+              span Publicado el #{new Date(post.created_at).toLocaleDateString()}
+      else
+        .upload-card(style="text-align: center;")
+          p(style="color: #777;") Este usuario aún no tiene publicaciones.
