@@ -73,13 +73,13 @@ html
                   span(style="color: #0c00b3; font-size: 14px; font-weight: bold;") #{post.total_likes || 0} Me gusta
 
               // --- SECCIÓN DE COMENTARIOS ---
-              .comments-section(style="margin-top: 20px; border-top: 1px solid #f7f7f7; padding-top: 15px;")
+              .comments-section(style="margin-top: 20px; border-top: 1px solid #000000; padding-top: 15px;")
                 
                 // 📖 Lista de comentarios existentes
                 if post.comentarios && post.comentarios.length > 0
                   .comments-list(style="margin-bottom: 15px; max-height: 200px; overflow-y: auto;")
                     each com in post.comentarios
-                      .comment-item(style="margin-bottom: 8px; background: #fcfcfc; padding: 6px 10px; border-radius: 4px;")
+                      .comment-item(style="margin-bottom: 8px; background: #ffffff; padding: 6px 10px; border-radius: 4px;")
                         span(style="color: #001677; font-size: 12px; font-weight: bold; display: block;") @#{com.username}
                         p(style="color: #000000; margin: 2px 0 0 0; font-size: 13px;") #{com.contenido}
                 else
@@ -87,7 +87,7 @@ html
                 
                 // ✍️ Caja para comentar
                 form(action=`/publicacion/${post.id}/comentario` method="POST" style="display: flex; gap: 10px; margin-bottom: 15px;")
-                  input.minimal-input(type="text" name="contenido" placeholder="Escribe un comentario..." required style="margin-bottom: 0; flex-grow: 1; padding: 8px; font-size: 13px; color: #fff;")
+                  input.minimal-input(type="text" name="contenido" placeholder="Escribe un comentario..." required style="margin-bottom: 0; flex-grow: 1; padding: 8px; font-size: 13px; color: #020202;")
                   button.btn-boca(type="submit" style="width: auto; margin-top: 0; padding: 0 15px; font-size: 13px;") Comentar
             
             .post-footer
