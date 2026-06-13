@@ -57,8 +57,7 @@ html
             .post-header
               div
                 h3 #{post.titulo}
-                a(href=`/usuario/${post.autor_id}` style="text-decoration: none;")
-                  span.post-username por @#{post.username}
+                span.post-username por @#{post.username}
               span.license-badge #{post.tipo_licencia === 'copyright' ? 'Copyright' : 'Libre'}
             
             img(src=post.ruta_archivo alt=post.titulo)

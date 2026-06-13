@@ -17,12 +17,12 @@ const PostModel = {
         return publicacionId;
     },
 
-    // Trae todas las publicaciones (con o sin búsqueda) + conteo de Likes real
+    // 🔍 Trae todas las publicaciones (con o sin búsqueda) + conteo de Likes real
     getAll: async (search = '') => {
         if (search) {
-            // Buscador + Conteo de Likes aislados con DISTINCT (Con alias autor_id y tipo_licencia)
+            // Buscador + Conteo de Likes aislados con DISTINCT
             const query = `
-                SELECT p.*, p.usuario_id AS autor_id, u.username, img.ruta_archivo, img.tipo_licencia, COUNT(DISTINCT l.id) AS total_likes
+                SELECT p.*, u.username, img.ruta_archivo, COUNT(DISTINCT l.id) AS total_likes
                 FROM publicaciones p 
                 JOIN usuarios u ON p.usuario_id = u.id 
                 LEFT JOIN imagenes img ON p.id = img.publicacion_id
@@ -34,9 +34,9 @@ const PostModel = {
             const [rows] = await db.query(query, [`%${search}%`, `%${search}%`]);
             return rows;
         } else {
-            // Muro completo + Conteo de Likes aislados con DISTINCT (Con alias autor_id y tipo_licencia)
+            // Muro completo + Conteo de Likes aislados con DISTINCT
             const query = `
-                SELECT p.*, p.usuario_id AS autor_id, u.username, img.ruta_archivo, img.tipo_licencia, COUNT(DISTINCT l.id) AS total_likes
+                SELECT p.*, u.username, img.ruta_archivo, COUNT(DISTINCT l.id) AS total_likes
                 FROM publicaciones p 
                 JOIN usuarios u ON p.usuario_id = u.id 
                 LEFT JOIN imagenes img ON p.id = img.publicacion_id

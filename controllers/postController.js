@@ -10,10 +10,12 @@ const PostController = {
             const search = req.query.search || '';
             const posts = await PostModel.getAll(search);
 
+            // 🔄 RECORREMOS CADA POST PARA TRAERLE SUS COMENTARIOS DESDE XAMPP
             for (let post of posts) {
                 post.comentarios = await CommentModel.getByPostId(post.id);
             }
 
+            // DIAGNÓSTICO: Para ver en la terminal si los comentarios se están adjuntando bien
             console.log("DATOS CON COMENTARIOS:", JSON.stringify(posts, null, 2));
 
             res.render('dashboard', { username: req.session.username, posts });
