@@ -10,7 +10,6 @@ const storage = multer.diskStorage({
         cb(null, 'public/uploads/'); // Apunta a la carpeta public/uploads
     },
     filename: (req, file, cb) => {
-        // Le pone un nombre único usando la fecha actual para que no se pisen archivos iguales
         cb(null, Date.now() + path.extname(file.originalname));
     }
 });
@@ -19,7 +18,9 @@ const upload = multer({ storage: storage });
 
 // Rutas de las publicaciones
 router.get('/dashboard', PostController.showDashboard);
-// upload.single('foto') le dice a multer que procese el campo del archivo llamado "foto"
 router.post('/publicar', upload.single('foto'), PostController.createPost);
+
+// 💙 CAMBIAMOS ESTA LÍNEA PARA QUE USE POSTCONTROLLER:
+router.post('/publicacion/:postId/like', PostController.toggleLike);
 
 module.exports = router;

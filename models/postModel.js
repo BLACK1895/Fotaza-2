@@ -1,6 +1,7 @@
 const db = require('../config/db');
 
 const PostModel = {
+    // Crea una publicación y su imagen asociada
     create: async (usuarioId, titulo, descripcion, rutaArchivo, tipoLicencia) => {
         const [postResult] = await db.query(
             'INSERT INTO publicaciones (usuario_id, titulo, descripcion) VALUES (?, ?, ?)',
@@ -16,30 +17,37 @@ const PostModel = {
         return publicacionId;
     },
 
+    // 🔍 Trae todas las publicaciones (con o sin búsqueda) + conteo de Likes real
     getAll: async (search = '') => {
         if (search) {
-            // Si hay un término en el buscador, filtramos las publicaciones
+            // Buscador + Conteo de Likes aislados con DISTINCT
             const query = `
-                SELECT p.*, u.username 
+                SELECT p.*, u.username, img.ruta_archivo, COUNT(DISTINCT l.id) AS total_likes
                 FROM publicaciones p 
                 JOIN usuarios u ON p.usuario_id = u.id 
+                LEFT JOIN imagenes img ON p.id = img.publicacion_id
+                LEFT JOIN likes l ON p.id = l.publicacion_id
                 WHERE p.titulo LIKE ? OR p.descripcion LIKE ?
+                GROUP BY p.id, img.id
                 ORDER BY p.created_at DESC
             `;
             const [rows] = await db.query(query, [`%${search}%`, `%${search}%`]);
             return rows;
         } else {
-            // Si el buscador está vacío, trae todo el Muro completo
+            // Muro completo + Conteo de Likes aislados con DISTINCT
             const query = `
-                SELECT p.*, u.username 
+                SELECT p.*, u.username, img.ruta_archivo, COUNT(DISTINCT l.id) AS total_likes
                 FROM publicaciones p 
                 JOIN usuarios u ON p.usuario_id = u.id 
+                LEFT JOIN imagenes img ON p.id = img.publicacion_id
+                LEFT JOIN likes l ON p.id = l.publicacion_id
+                GROUP BY p.id, img.id
                 ORDER BY p.created_at DESC
             `;
             const [rows] = await db.query(query);
             return rows;
         }
-    }
+    },
 };
 
 module.exports = PostModel;

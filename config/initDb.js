@@ -77,6 +77,17 @@ async function initDb() {
                 FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
             )
         `);
+    await db.query(`
+        CREATE TABLE IF NOT EXISTS likes (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                usuario_id INT NOT NULL,
+                publicacion_id INT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE KEY unq_usuario_publicacion (usuario_id, publicacion_id),
+                FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+                FOREIGN KEY (publicacion_id) REFERENCES publicaciones(id) ON DELETE CASCADE
+            )
+    `);
     await db.query(` 
         CREATE TABLE IF NOT EXISTS seguidores (
                 seguidor_id INT NOT NULL,
